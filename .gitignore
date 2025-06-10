@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# dotenv
+.env
+.env.*  
+
+# Sistema / IDE
+.vscode/
+.DS_Store
+Thumbs.db
+.idea/
+
+# Coverage (tests)
+coverage/
+
+# Otros
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
