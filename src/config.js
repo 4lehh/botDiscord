@@ -7,4 +7,5 @@ module.exports = {
     guildId: process.env.guildId,
     roles_permitidos: process.env.roles_permitidos,
     canal_log: process.env.canal_log,
+    canal_sugerencia: process.env.canal_sugerencia,
 };

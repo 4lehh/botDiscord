@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
 const { token, canal_log }= require("./config.js"); // Configuracion del bot
 
 // Primero creamos el cliente
@@ -10,7 +10,9 @@ const client = new Client( {intents: [
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildVoiceStates,
-    ] 
+    GatewayIntentBits.GuildMessageReactions,
+    ], 
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
 // Hasheo de los comandos con su respectivo execute
@@ -29,6 +31,7 @@ for (const file of files){
 
 // Cargar eventos (Interactions, logs)
 require('./events/interaction.js')(client);
+require('./events/messageReactionAdd.js')(client);
 require('./events/messageUpdate.js')(client, canal_log);
 require('./events/messageDelete.js')(client, canal_log);
 require('./events/voiceStateUpdate.js')(client, canal_log)
