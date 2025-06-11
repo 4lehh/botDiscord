@@ -50,30 +50,34 @@ module.exports = {
             .setRequired(false)),
 	
     async execute(interaction) {
-        const user = interaction.user;
-        const channel = interaction.options.getChannel('channel')
-        const sub_titulo = interaction.options.getString('sub-titulo')
-        const titulo = interaction.options.getString('titulo');
-        const url = interaction.options.getString('url') ?? 'https://4lehh.github.io';
-        const description = interaction.options.getString('description');
-        const regular = interaction.options.getString('regular');
-        const image = interaction.options.getString('image');
-        const color = interaction.options.getString('color') ?? 'ffffff';
+        try{
+            const user = interaction.user;
+            const channel = interaction.options.getChannel('channel')
+            const sub_titulo = interaction.options.getString('sub-titulo')
+            const titulo = interaction.options.getString('titulo');
+            const url = interaction.options.getString('url') ?? 'https://4lehh.github.io';
+            const description = interaction.options.getString('description');
+            const regular = interaction.options.getString('regular');
+            const image = interaction.options.getString('image');
+            const color = interaction.options.getString('color') ?? 'ffffff';
 
-        const embed = new EmbedBuilder()
-            .setColor(color)
-            .setTitle(titulo)
-            .setURL(url)
-            .setAuthor( {name: user.username, iconURL: user.displayAvatarURL({ format: 'png', size: 1024 })})
-            .setDescription(description)
-            .addFields(
-                {name: sub_titulo, value: regular},
-            )
-            .setImage(image)
-            .setTimestamp()
-            .setFooter({ text: `Hecho por ${user.username}`, iconURL: user.displayAvatarURL() });
-        channel.send({embeds: [embed]});
+            const embed = new EmbedBuilder()
+                .setColor(color)
+                .setTitle(titulo)
+                .setURL(url)
+                .setAuthor( {name: user.username, iconURL: user.displayAvatarURL({ format: 'png', size: 1024 })})
+                .setDescription(description)
+                .addFields(
+                    {name: sub_titulo, value: regular},
+                )
+                .setImage(image)
+                .setTimestamp()
+                .setFooter({ text: `Hecho por ${user.username}`, iconURL: user.displayAvatarURL() });
+            channel.send({embeds: [embed]});
 
-        await interaction.reply({ content: 'Embed hecho con exito', ephemeral: true });
+            await interaction.reply({ content: 'Embed hecho con exito', ephemeral: true });
+        } catch(error){
+            return await interaction.reply({ content: 'Error al ejecutar el comando', ephemeral: true });
+        }
     },
 };

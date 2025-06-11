@@ -10,13 +10,13 @@ module.exports = {
 		.setRequired(true))
 	.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
 	async execute(interaction) {
-		const user = interaction.options.getUser('user');
-
 		try{
+			const user = interaction.options.getUser('user');
+		
 			await interaction.guild.members.unban(user.id);
 			await interaction.reply({ content: `El usuario ${user.tag} ha sido unbaneado. `, ephemeral: true });
 		} catch(error){
-			await interaction.reply({ content: `No ha podido unbanear a ${user.tag}`, ephemeral: true });
+			return await interaction.reply({ content: `No ha podido unbanear a ${user.tag}`, ephemeral: true });
 		}
 	},
 };

@@ -25,21 +25,22 @@ module.exports = {
             .setRequired(false))
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
 	async execute(interaction) {
-        // Validar si puede banear
-        if(!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)){
-            return await interaction.reply({ content: 'No puedes dar timeout a los usuarios', ephemeral: true });
-        }
-
-        const user = interaction.options.getUser('user');
-        const duracionMin = interaction.options.getInteger('duracion'); // en minutos
-        let duracion = duracionMin * 60000; // Duracion en ms
-        const razon = interaction.options.getString('razon') ?? 'No hay razón';
-
-        const MAX_TIMEOUT = 28 * 24 * 60 * 60000; // 28 días en ms
-        if (duracion > MAX_TIMEOUT) duracion = MAX_TIMEOUT;
-        if (duracion <= 0) duracion = null;
-
         try {
+            // Validar si puede banear
+            if(!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)){
+                return await interaction.reply({ content: 'No puedes dar timeout a los usuarios', ephemeral: true });
+            }
+
+            const user = interaction.options.getUser('user');
+            const duracionMin = interaction.options.getInteger('duracion'); // en minutos
+            let duracion = duracionMin * 60000; // Duracion en ms
+            const razon = interaction.options.getString('razon') ?? 'No hay razón';
+
+            const MAX_TIMEOUT = 28 * 24 * 60 * 60000; // 28 días en ms
+            if (duracion > MAX_TIMEOUT) duracion = MAX_TIMEOUT;
+            if (duracion <= 0) duracion = null;
+
+        
             const member = await interaction.guild.members.fetch(user.id);
             
             if (!member.isCommunicationDisabled() && duracion === null) {
@@ -59,7 +60,7 @@ module.exports = {
             
         } catch(error) {
             console.log(error);
-            await interaction.reply( {content: `No se ha podido aplicar el timeout a ${user.tag}.`, ephemeral: true});
+            await await interaction.reply( {content: `No se ha podido aplicar el timeout a ${user.tag}.`, ephemeral: true});
         }
     
     },
