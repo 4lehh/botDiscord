@@ -1,13 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const { Client, Collection, GatewayIntentBits, Events } = require("discord.js");
-const { token }= require("./config.js"); // Configuracion del bot
+const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { token, canal_log }= require("./config.js"); // Configuracion del bot
 
 // Primero creamos el cliente
 const client = new Client( {intents: [
     GatewayIntentBits.Guilds, 
-    GatewayIntentBits.MessageContent, 
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,
     ] 
 });
 
@@ -18,56 +20,24 @@ client.command = new Collection();
 const commands_path = path.join(__dirname, 'commands');
 const files = fs.readdirSync(commands_path)
 
+// Cargar comandos 
 for (const file of files){
     const command = require(`./commands/${file}`);
     // Setea el nombre y el comando
     client.command.set(command.data.name, command)
 }
 
+// Cargar eventos (Interactions, logs)
+require('./events/interaction.js')(client);
+require('./events/messageUpdate.js')(client, canal_log);
+require('./events/messageDelete.js')(client, canal_log);
+require('./events/voiceStateUpdate.js')(client, canal_log)
+
+// Activacion del bot
 client.once('ready', () => {
     console.log(`Bot iniciado como ${client.user.tag}`);
 });
 
-client.on(Events.InteractionCreate, async interaction => {
-    if(!interaction.isChatInputCommand()) return;
-
-    const command = client.command.get(interaction.commandName);
-
-    if(!command) return;
-
-    try{
-        await command.execute(interaction);
-    } catch(error) {
-        console.error(error);
-        await interaction.reply({content: 'Hubo un error 😥', ephemeral: true});
-    }
-
-})
-
-// Comandos sin slashbar
-// client.on('messageCreate', (message) => {
-//     // Si es de un bot o sin prefijo, lo ignora
-//     if(message.author.bot || !message.content.startsWith(prefix)) return;
-
-//     // Saco el comando del mensaje
-//     // slice omite parte del texto (prefix)
-//     // trim elimina espacios del final e inicio
-//     // split separa por los espacios 
-//     const args = message.content.slice(prefix.length).trim().split(/ +/);
-    
-//     // shift hace pop del primer elemento de args
-//     const commandName = args.shift().toLocaleLowerCase();
-
-//     // Si no es un comando, ignorar
-//     if(!client.command.has(commandName)) return;
-
-//     try{
-//         // Va a obtener el comando y va a aplicar la regla execute
-//         client.command.get(commandName).execute(message, args);
-//     } catch(error){
-//         console.log(error);
-//     }
-// });
 
 // Omitir warning por ephemeral
 process.removeAllListeners('warning');
