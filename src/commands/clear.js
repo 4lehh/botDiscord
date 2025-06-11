@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
+const { roles_permitidos }= require("../config.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,8 +13,7 @@ module.exports = {
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
 	async execute(interaction) {
-        const roles_permitidos = ['1381833948425883679'];
-
+        // Valida que si tenga el rol pertinente
         const tiene_el_rol = interaction.member.roles.cache.some(rol => roles_permitidos.includes(rol.id));
         
         if(!tiene_el_rol) return await interaction.reply({content: 'No estas permitido para ejecutar este comando', ephemeral: true});

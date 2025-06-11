@@ -7,9 +7,23 @@ module.exports = {
         .addStringOption(option => 
             option.setName('mensaje')
                 .setDescription('El mensaje que quieres que repita')
-                .setRequired(true)),
+                .setRequired(true))
+		.addChannelOption(option =>
+			option.setName('canal')
+			.setDescription('Envia un mensaje a un canal especifico')
+			.setRequired(true)
+		),
 	async execute(interaction) {
-        const mensaje = interaction.options.getString('mensaje');
-		await interaction.reply({ content: mensaje, ephemeral: true });
+        // Extraer los valores
+		const mensaje = interaction.options.getString('mensaje');
+		const channel = interaction.options.getChannel('canal');
+
+		if(!channel.isTextBased()) return interaction.reply({ content: 'Este canal no tiene permitido enviar mensajes', ephemeral: true });
+
+		// Envia mensaje al canal
+		await channel.send(mensaje)
+		
+		// Respuesta de que funcionó
+		await interaction.reply({ content: 'Mensaje enviado con exito', ephemeral: true });
 	},
 };

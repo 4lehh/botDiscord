@@ -5,4 +5,5 @@ module.exports = {
     prefix: process.env.PREFIX,
     clientId: process.env.clientId,
     guildId: process.env.guildId,
+    roles_permitidos: process.env.roles_permitidos,
 };

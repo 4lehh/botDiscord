@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { Client, Collection, GatewayIntentBits, Events } = require("discord.js");
-const { token, prefix }= require("./config.js"); // Configuracion del bot
+const { token }= require("./config.js"); // Configuracion del bot
 
 // Primero creamos el cliente
 const client = new Client( {intents: [
@@ -44,31 +44,32 @@ client.on(Events.InteractionCreate, async interaction => {
 
 })
 
-client.on('messageCreate', (message) => {
-    // Si es de un bot o sin prefijo, lo ignora
-    if(message.author.bot || !message.content.startsWith(prefix)) return;
+// Comandos sin slashbar
+// client.on('messageCreate', (message) => {
+//     // Si es de un bot o sin prefijo, lo ignora
+//     if(message.author.bot || !message.content.startsWith(prefix)) return;
 
-    // Saco el comando del mensaje
-    // slice omite parte del texto (prefix)
-    // trim elimina espacios del final e inicio
-    // split separa por los espacios 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+//     // Saco el comando del mensaje
+//     // slice omite parte del texto (prefix)
+//     // trim elimina espacios del final e inicio
+//     // split separa por los espacios 
+//     const args = message.content.slice(prefix.length).trim().split(/ +/);
     
-    // shift hace pop del primer elemento de args
-    const commandName = args.shift().toLocaleLowerCase();
+//     // shift hace pop del primer elemento de args
+//     const commandName = args.shift().toLocaleLowerCase();
 
-    // Si no es un comando, ignorar
-    if(!client.command.has(commandName)) return;
+//     // Si no es un comando, ignorar
+//     if(!client.command.has(commandName)) return;
 
-    try{
-        // Va a obtener el comando y va a aplicar la regla execute
-        client.command.get(commandName).execute(message, args);
-    } catch(error){
-        console.log(error);
-    }
-});
+//     try{
+//         // Va a obtener el comando y va a aplicar la regla execute
+//         client.command.get(commandName).execute(message, args);
+//     } catch(error){
+//         console.log(error);
+//     }
+// });
 
-// Omitir warning
+// Omitir warning por ephemeral
 process.removeAllListeners('warning');
 
 client.login(token); // Usas el token aquí, NO lo muestras
