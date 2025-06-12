@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -75,9 +75,9 @@ module.exports = {
                 .setFooter({ text: `Hecho por ${user.username}`, iconURL: user.displayAvatarURL() });
             channel.send({embeds: [embed]});
 
-            await interaction.reply({ content: 'Embed hecho con exito', ephemeral: true });
+            await interaction.reply({ content: 'Embed hecho con exito', flags: MessageFlags.Ephemeral });
         } catch(error){
-            return await interaction.reply({ content: 'Error al ejecutar el comando', ephemeral: true });
+            return await interaction.reply({ content: 'Error al ejecutar el comando', flags: MessageFlags.Ephemeral });
         }
     },
 };

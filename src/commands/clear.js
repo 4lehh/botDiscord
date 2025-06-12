@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js')
 const { roles_permitidos }= require("../config.js");
 
 module.exports = {
@@ -32,14 +32,14 @@ module.exports = {
                 });
             
             // Si no resulta
-            if(!mensajes_borrados) return await interaction.reply({content: 'Hubo un error al eliminar', ephemeral: true});
+            if(!mensajes_borrados) return await interaction.reply({content: 'Hubo un error al eliminar', flags: MessageFlags.Ephemeral});
             
             // Mensaje de exito
-            await interaction.reply({content: 'Borrado con exito', ephemeral: true});
+            await interaction.reply({content: 'Borrado con exito', flags: MessageFlags.Ephemeral});
         
         } catch(error){
 
-            return await interaction.reply({ content: 'Error al ejecutar el comando', ephemeral: true });
+            return await interaction.reply({ content: 'Error al ejecutar el comando', flags: MessageFlags.Ephemeral });
         }
 	},
 };

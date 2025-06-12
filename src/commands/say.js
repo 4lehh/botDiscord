@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -19,15 +19,15 @@ module.exports = {
 			const mensaje = interaction.options.getString('mensaje');
 			const channel = interaction.options.getChannel('canal');
 
-			if(!channel.isTextBased()) return interaction.reply({ content: 'Este canal no tiene permitido enviar mensajes', ephemeral: true });
+			if(!channel.isTextBased()) return interaction.reply({ content: 'Este canal no tiene permitido enviar mensajes', flags: MessageFlags.Ephemeral });
 
 			// Envia mensaje al canal
 			await channel.send(mensaje)
 			
 			// Respuesta de que funcionó
-			await interaction.reply({ content: 'Mensaje enviado con exito', ephemeral: true });
+			await interaction.reply({ content: 'Mensaje enviado con exito', flags: MessageFlags.Ephemeral });
 		} catch(error){
-			return await interaction.reply({ content: 'Error al ejecutar el comando', ephemeral: true });
+			return await interaction.reply({ content: 'Error al ejecutar el comando', flags: MessageFlags.Ephemeral });
 		}
 	},
 };

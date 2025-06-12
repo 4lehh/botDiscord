@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,10 +13,11 @@ module.exports = {
 		try{
 			const user = interaction.options.getUser('user');
 		
-			await interaction.guild.members.unban(user.id);
-			await interaction.reply({ content: `El usuario ${user.tag} ha sido unbaneado. `, ephemeral: true });
+			interaction.guild.members.unban(user.id);
+			
+			await interaction.reply({ content: `El usuario ${user.tag} ha sido unbaneado. `, flags: MessageFlags.Ephemeral });
 		} catch(error){
-			return await interaction.reply({ content: `No ha podido unbanear a ${user.tag}`, ephemeral: true });
+			return await interaction.reply({ content: `No ha podido unbanear a ${user.tag}`, flags: MessageFlags.Ephemeral });
 		}
 	},
 };

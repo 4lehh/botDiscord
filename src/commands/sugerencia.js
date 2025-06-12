@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 const { embed_sugerencia } = require('../models/embeds_models.js')
 const { canal_sugerencia } = require('../config.js')
 
@@ -33,10 +33,10 @@ module.exports = {
             await message.react('✅');
             await message.react('❌');
 
-            await interaction.reply({content: 'Sugerencia enviada con exito', ephemeral: true});
+            await interaction.reply({content: 'Sugerencia enviada con exito', flags: MessageFlags.Ephemeral});
         } catch(error){
             console.error('Error en comando /sugerencia:', error);
-            await interaction.reply({ content: 'No se pudo enviar tu sugerencia', ephemeral: true })
+            await interaction.reply({ content: 'No se pudo enviar tu sugerencia', flags: MessageFlags.Ephemeral })
         }
 	},
 };

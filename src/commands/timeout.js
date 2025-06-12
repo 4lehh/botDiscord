@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -28,7 +28,7 @@ module.exports = {
         try {
             // Validar si puede banear
             if(!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)){
-                return await interaction.reply({ content: 'No puedes dar timeout a los usuarios', ephemeral: true });
+                return await interaction.reply({ content: 'No puedes dar timeout a los usuarios', flags: MessageFlags.Ephemeral });
             }
 
             const user = interaction.options.getUser('user');
@@ -40,27 +40,29 @@ module.exports = {
             if (duracion > MAX_TIMEOUT) duracion = MAX_TIMEOUT;
             if (duracion <= 0) duracion = null;
 
-        
-            const member = await interaction.guild.members.fetch(user.id);
+            // Ver si se encuentra en la caché 
+            let member = await interaction.guild.members.cache.get(user.id);
+            
+            if(!member) member = await interaction.guild.members.fetch(user.id);
             
             if (!member.isCommunicationDisabled() && duracion === null) {
                 return interaction.reply("Este usuario no tiene un timeout activo.");
             }
 
             // aplicar el timeout
-            await member.timeout(duracion, razon);
+            member.timeout(duracion, razon);
             
 
             if(duracion === 0){
-                return await interaction.reply({content: `⏳ Ha ${user.tag} se le ha quitado el aislamiento.`, ephemeral: true});
+                return await interaction.reply({content: `⏳ Ha ${user.tag} se le ha quitado el aislamiento.`, flags: MessageFlags.Ephemeral});
             }
 
-            await interaction.reply({content: `⏳ ${user.tag} ha sido aislado por ${duracion / 60000} minutos. Razón: ${razon}`, ephemeral: true});
+            await interaction.reply({content: `⏳ ${user.tag} ha sido aislado por ${duracion / 60000} minutos. Razón: ${razon}`, flags: MessageFlags.Ephemeral});
 
             
         } catch(error) {
             console.log(error);
-            await await interaction.reply( {content: `No se ha podido aplicar el timeout a ${user.tag}.`, ephemeral: true});
+            await await interaction.reply( {content: `No se ha podido aplicar el timeout a ${user.tag}.`, flags: MessageFlags.Ephemeral});
         }
     
     },

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -19,7 +19,7 @@ module.exports = {
         try{
             // Validar si puede kickear
             if(!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)){
-                return await interaction.reply({ content: 'No puedes kickear usuarios', ephemeral: true });
+                return await interaction.reply({ content: 'No puedes kickear usuarios', flags: MessageFlags.Ephemeral });
             }
 
             const user = interaction.options.getUser('user');
@@ -32,14 +32,14 @@ module.exports = {
 
             // No expulsarte a ti mismo
             if (miembro.id === interaction.guild.ownerId || miembro.id == interaction.guild.ownerId) {
-                return interaction.reply({ content: 'No puedes expulsar al dueño del servidor.', ephemeral: true });
+                return interaction.reply({ content: 'No puedes expulsar al dueño del servidor.', flags: MessageFlags.Ephemeral });
             }
 
             await interaction.reply(`Kickeaste a ${user} por ${razon}`);
             await miembro.kick(razon);
         } catch(error) {
             console.log(error);
-            return await interaction.reply({content: 'No puedes expulsar a este usuario', ephemeral: true});
+            return await interaction.reply({content: 'No puedes expulsar a este usuario', flags: MessageFlags.Ephemeral});
         }
 		
 	},

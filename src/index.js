@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
-const { token, canal_log }= require("./config.js"); // Configuracion del bot
+const config = require("./config.js"); // Configuracion del bot
 
 // Primero creamos el cliente
 const client = new Client( {intents: [
@@ -32,9 +32,9 @@ for (const file of files){
 // Cargar eventos (Interactions, logs)
 require('./events/interaction.js')(client);
 require('./events/messageReactionAdd.js')(client);
-require('./events/messageUpdate.js')(client, canal_log);
-require('./events/messageDelete.js')(client, canal_log);
-require('./events/voiceStateUpdate.js')(client, canal_log)
+require('./events/messageUpdate.js')(client, config.canal_log);
+require('./events/messageDelete.js')(client, config.canal_log);
+require('./events/voiceStateUpdate.js')(client, config.canal_log)
 
 // Activacion del bot
 client.once('ready', () => {
@@ -45,4 +45,4 @@ client.once('ready', () => {
 // Omitir warning por ephemeral
 process.removeAllListeners('warning');
 
-client.login(token); // Usas el token aquí, NO lo muestras
+client.login(config.token); // Usas el token aquí, NO lo muestras
