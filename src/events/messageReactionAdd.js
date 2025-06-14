@@ -19,7 +19,7 @@ module.exports = (client) => {
             const message = reaction.message;
             
             // Si no viene del mismo mensaje, fuera.
-            if(message.id !== jsonData.mensaje_reaccion.mensaje_id) return console.log('No es el mismo mensaje');
+            if(message.id !== jsonData.mensaje_reaccion.mensaje_id) return;
             
             if(reaction.emoji.name !== '🤓') return;
 
