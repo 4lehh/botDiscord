@@ -34,7 +34,7 @@ require('./events/interaction.js')(client);
 require('./events/messageReactionAdd.js')(client);
 require('./events/messageUpdate.js')(client, config.canal_log);
 require('./events/messageDelete.js')(client, config.canal_log);
-require('./events/voiceStateUpdate.js')(client, config.canal_log)
+require('./events/voiceStateUpdate.js')(client, config.canal_log);
 
 // Activacion del bot
 client.once('ready', () => {

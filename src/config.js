@@ -8,4 +8,5 @@ module.exports = {
     roles_permitidos: process.env.roles_permitidos,
     canal_log: process.env.canal_log,
     canal_sugerencia: process.env.canal_sugerencia,
+    key_gemini: process.env.KEY_API,
 };
